@@ -1,0 +1,1 @@
+export const step2Schema = {}
