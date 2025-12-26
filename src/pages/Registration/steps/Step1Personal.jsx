@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import FormInput from '@comp/form';
+import {FormInput} from '@comp/form';
 
 const Step1Personal = () => {
 	const {
@@ -50,7 +50,7 @@ const Step1Personal = () => {
 				error={errors?.personal?.confirmPassword}
 			/>
 
-			<button type="submit">Далі =></button>
+			<button type="submit">Далі →</button>
 		</>
 	);
 };
