@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { nameRegex, passwordRegex } from '@utils/constans';
+import cls from './Registration.module.css'
 
 import {
 	step1Schema,
