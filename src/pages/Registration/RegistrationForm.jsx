@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { nameRegex, passwordRegex } from '@utils/constans';
 
 import {
 	step1Schema,
@@ -70,10 +71,10 @@ const RegistrationForm = () => {
 		}));
 		setCurrentStep(prev => prev + 1);
 	};
-	
-	const handleBack = ()=>{
-	  setCurrentStep(prev=>prev-1)
-	}
+
+	const handleBack = () => {
+		setCurrentStep(prev => prev - 1);
+	};
 
 	const handleSubmitForm = () => {};
 

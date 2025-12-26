@@ -1,0 +1,33 @@
+:root {
+	--header-h: 64px;
+	--footer-h: 56px;
+}
+
+.layout {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	padding: 0 10px;
+}
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: var(--header-h);
+	z-index: 1000;
+}
+
+.main {
+	flex: 1;
+	margin-top: var(--header-h);
+	margin-bottom: var(--footer-h);
+
+	overflow-y: auto;
+}
+
+footer {
+	height: var(--footer-h);
+	flex-shrink: 0;
+}
