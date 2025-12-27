@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import {FormInput} from '@comp/form';
+import { FormInput } from '@comp/form';
 
 const Step1Personal = () => {
 	const {

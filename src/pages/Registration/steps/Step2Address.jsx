@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormInput, FormSelect } from '@comp/form';
 import { countries } from '@/utils/countries';
+import cls from './steps.module.css';
 
 const Step2Address = ({ onBack }) => {
 	const {
@@ -67,10 +68,10 @@ const Step2Address = ({ onBack }) => {
 					country === 'UA' ? '12345' : '12345 або 12345-6789'
 				}
 			/>
-<div className={cls.formButtons}>
-			<button type="button" onClick={onBack}>← Назад</button>
-			<button type="submit">Далі →</button>
-</div>
+			<div className={cls.formButtons}>
+				<button type="button" onClick={onBack}>← Назад</button>
+				<button type="submit">Далі →</button>
+			</div>
 		</>
 	);
 };
