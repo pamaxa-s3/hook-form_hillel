@@ -10,8 +10,8 @@ const Navigation = () => {
 			>
 				Home
 			</NavLink>
-			<NavLink to="/" className={({ isActive }) => (isActive ? `${cls.active}` : '')}>link</NavLink>
-			<NavLink to="/" className={({ isActive }) => (isActive ? `${cls.active}` : '')}>link</NavLink>
+			<NavLink to="/registration" className={({ isActive }) => (isActive ? `${cls.active}` : '')}>Registration</NavLink>
+		
 		</nav>
 	);
 };

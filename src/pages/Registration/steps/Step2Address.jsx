@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormInput, FormSelect } from '@comp/form';
-import { countries } from '@/utils/countries';
+import { countries } from '@utils/countries';
 import cls from './steps.module.css';
 
-const Step2Address = ({ onBack }) => {
+const Step2Address = ({ onNext, onBack }) => {
 	const {
 		register,
 		watch,
@@ -69,8 +69,12 @@ const Step2Address = ({ onBack }) => {
 				}
 			/>
 			<div className={cls.formButtons}>
-				<button type="button" onClick={onBack}>← Назад</button>
-				<button type="submit">Далі →</button>
+				<button type="button" onClick={onBack}>
+					← Назад
+				</button>
+				<button type="button" onClick={onNext}>
+					Далі →
+				</button>
 			</div>
 		</>
 	);

@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import ProgressBar from '@comp/ProgressBar'
 
 import {
 	step1Schema,
@@ -9,12 +10,16 @@ import {
 	step4Schema
 } from '@validation';
 
-import Step1Personal from './steps/Step1Personal';
-import Step2Address from './steps/Step2Address';
-import Step3Additional from './steps/Step3Additional';
-import Step4Review from './steps/Step4Review';
+import {
+	Step1Personal,
+	Step2Address,
+	Step3Additional,
+	Step4Review
+} from '@pages/Registration/steps';
 
-import cls from './RegistrationForm.module.css';
+import cls from './Registration.module.css';
+
+/* ================= DEFAULT VALUES ================= */
 
 const DEFAULT_VALUES = {
 	personal: {
@@ -45,6 +50,17 @@ const DEFAULT_VALUES = {
 	}
 };
 
+/* ================= FIELDS BY STEP ================= */
+
+const STEP_FIELDS = {
+	1: ['personal'],
+	2: ['address'],
+	3: ['additional'],
+	4: ['agreements']
+};
+
+/* ================= FORM ================= */
+
 const RegistrationForm = () => {
 	const [currentStep, setCurrentStep] = useState(1);
 
@@ -64,15 +80,17 @@ const RegistrationForm = () => {
 	}, [currentStep]);
 
 	const methods = useForm({
-		resolver,
 		defaultValues: DEFAULT_VALUES,
+		resolver,
 		mode: 'onBlur',
 		shouldUnregister: false
 	});
 
 	const nextStep = async () => {
-		const isValid = await methods.trigger();
+		const fields = STEP_FIELDS[currentStep];
+		const isValid = await methods.trigger(fields);
 		if (!isValid) return;
+
 		setCurrentStep(prev => prev + 1);
 	};
 
@@ -96,6 +114,8 @@ const RegistrationForm = () => {
 				className={cls.form}
 				onSubmit={methods.handleSubmit(onSubmit)}
 			>
+				<ProgressBar currentStep={currentStep} totalSteps={4} />
+
 				{currentStep === 1 && <Step1Personal onNext={nextStep} />}
 				{currentStep === 2 && (
 					<Step2Address onNext={nextStep} onBack={prevStep} />

@@ -1,13 +1,16 @@
-export const getAge = (date) => {
-	const today = new Date();
-	const birth = new Date(date);
+export const isAdult = (date) => {
+  const today = new Date();
+  const birthDate = new Date(date);
 
-	let age = today.getFullYear() - birth.getFullYear();
-	const m = today.getMonth() - birth.getMonth();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
 
-	if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-		age--;
-	}
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
 
-	return age;
+  return age;
 };

@@ -1,15 +1,18 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import FormInput from '@/comp/form/FormInput';
-import FormRadio from '@/comp/form/FormRadio';
-import FormTextarea from '@/comp/form/FormTextarea';
-import FormFileUpload from '@/comp/form/FormFileUpload';
-import cls from './steps.module.css'
+import {
+	FormInput,
+	FormRadio,
+	FormTextarea,
+	FormFileUpload
+} from '@comp/form';
 
-const Step3Additional = ({ onBack }) => {
+import cls from './steps.module.css';
+
+const Step3Additional = ({ onNext, onBack }) => {
 	const {
 		register,
 		control,
-		formState: { errors },
+		formState: { errors }
 	} = useFormContext();
 
 	return (
@@ -38,13 +41,13 @@ const Step3Additional = ({ onBack }) => {
 				render={({ field }) => (
 					<FormRadio
 						label="Стать"
-						{...field}
 						options={[
 							{ value: 'male', label: 'Чоловіча' },
 							{ value: 'female', label: 'Жіноча' },
-							{ value: 'other', label: 'Інше' },
+							{ value: 'other', label: 'Інше' }
 						]}
 						error={errors?.additional?.gender}
+						{...field}
 					/>
 				)}
 			/>
@@ -63,8 +66,8 @@ const Step3Additional = ({ onBack }) => {
 					<FormTextarea
 						label="Про себе"
 						maxLength={500}
-						{...field}
 						error={errors?.additional?.bio}
+						{...field}
 					/>
 				)}
 			/>
@@ -73,7 +76,10 @@ const Step3Additional = ({ onBack }) => {
 				<button type="button" onClick={onBack}>
 					← Назад
 				</button>
-				<button type="submit">Далі →</button>
+
+				<button type="button" onClick={onNext}>
+					Далі →
+				</button>
 			</div>
 		</>
 	);

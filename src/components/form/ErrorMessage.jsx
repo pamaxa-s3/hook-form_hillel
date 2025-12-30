@@ -1,5 +1,6 @@
 const ErrorMessage = ({ message }) => {
-	return <>{message.length && <div>{message}</div>}</>;
+  if (!message) return null;
+  return <div>{message}</div>;
 };
 
 export default ErrorMessage

@@ -1,0 +1,47 @@
+.wrapper {
+	margin-bottom: 32px;
+}
+
+.track {
+	position: relative;
+	height: 6px;
+	background: #e5e7eb;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.progress {
+	height: 100%;
+	background: #2563eb;
+	transition: width 0.3s ease;
+}
+
+.steps {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 12px;
+}
+
+.step {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: #e5e7eb;
+	color: #6b7280;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.step.done {
+	background: #2563eb;
+	color: #fff;
+}
+
+.step.active {
+	border: 2px solid #2563eb;
+	background: #fff;
+	color: #2563eb;
+}

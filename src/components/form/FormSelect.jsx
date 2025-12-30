@@ -1,7 +1,7 @@
 import ErrorMessage from './ErrorMessage';
 import cls from './form.module.css';
 
-const FormSelect = ({ label, name, option, register, error }) => {
+const FormSelect = ({ label, name, options, register, error }) => {
 	return (
 		<div className={cls.formField}>
 			<label htmlFor={name}>{label}</label>
