@@ -1,8 +1,11 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import ProgressBar from '@comp/ProgressBar'
 
+import {Step1Personal,Step2Address,Step3Additional,Step4Review} from '@pages/Registration/steps';
+
+import Stepper from '@components/Stepper';
 import {
 	step1Schema,
 	step2Schema,
@@ -10,123 +13,85 @@ import {
 	step4Schema
 } from '@validation';
 
-import {
-	Step1Personal,
-	Step2Address,
-	Step3Additional,
-	Step4Review
-} from '@pages/Registration/steps';
+const schemas = [step1Schema, step2Schema, step3Schema, step4Schema];
+const STORAGE_KEY = 'registration-form';
 
-import cls from './Registration.module.css';
-
-/* ================= DEFAULT VALUES ================= */
-
-const DEFAULT_VALUES = {
-	personal: {
-		firstName: '',
-		lastName: '',
-		email: '',
-		password: '',
-		confirmPassword: ''
-	},
-	address: {
-		country: '',
-		city: '',
-		street: '',
-		building: '',
-		apartment: '',
-		postalCode: ''
-	},
-	additional: {
-		phone: '',
-		birthDate: '',
-		gender: '',
-		avatar: null,
-		bio: ''
-	},
-	agreements: {
-		terms: false,
-		newsletter: false
-	}
+const defaultData = {
+	personal: {},
+	address: {},
+	additional: {},
+	agreements: {}
 };
 
-/* ================= FIELDS BY STEP ================= */
+export default function RegistrationForm() {
+	const navigate = useNavigate();
 
-const STEP_FIELDS = {
-	1: ['personal'],
-	2: ['address'],
-	3: ['additional'],
-	4: ['agreements']
-};
+	const [step, setStep] = useState(1);
+	const [formData, setFormData] = useState(defaultData);
 
-/* ================= FORM ================= */
-
-const RegistrationForm = () => {
-	const [currentStep, setCurrentStep] = useState(1);
-
-	const resolver = useMemo(() => {
-		switch (currentStep) {
-			case 1:
-				return yupResolver(step1Schema);
-			case 2:
-				return yupResolver(step2Schema);
-			case 3:
-				return yupResolver(step3Schema);
-			case 4:
-				return yupResolver(step4Schema);
-			default:
-				return yupResolver(step1Schema);
-		}
-	}, [currentStep]);
+	const goToStep = value => setStep(value);
 
 	const methods = useForm({
-		defaultValues: DEFAULT_VALUES,
-		resolver,
+		resolver: yupResolver(schemas[step - 1]),
 		mode: 'onBlur',
-		shouldUnregister: false
+		defaultValues: formData
 	});
 
-	const nextStep = async () => {
-		const fields = STEP_FIELDS[currentStep];
-		const isValid = await methods.trigger(fields);
-		if (!isValid) return;
+	const { handleSubmit, reset } = methods;
 
-		setCurrentStep(prev => prev + 1);
+	useEffect(() => {
+		const saved = localStorage.getItem(STORAGE_KEY);
+		if (saved) {
+			const parsed = JSON.parse(saved);
+			setStep(parsed.step);
+			setFormData(parsed.data);
+			reset(parsed.data);
+		}
+	}, [reset]);
+
+	const saveProgress = data => {
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify({
+				step,
+				data,
+				lastSaved: new Date().toISOString()
+			})
+		);
 	};
 
-	const prevStep = () => {
-		setCurrentStep(prev => prev - 1);
+	const next = data => {
+		const updated = { ...formData, ...data };
+		setFormData(updated);
+		saveProgress(updated);
+		setStep(s => s + 1);
 	};
 
-	const onSubmit = async data => {
-		console.log('FINAL DATA:', data);
+	const back = () => setStep(s => s - 1);
 
-		await new Promise(res => setTimeout(res, 1000));
-
-		alert('Реєстрація успішна');
-		methods.reset();
-		setCurrentStep(1);
+	const finish = data => {
+		console.log('REGISTER DATA:', data);
+		localStorage.removeItem(STORAGE_KEY);
+		navigate('/success');
 	};
 
 	return (
 		<FormProvider {...methods}>
-			<form
-				className={cls.form}
-				onSubmit={methods.handleSubmit(onSubmit)}
-			>
-				<ProgressBar currentStep={currentStep} totalSteps={4} />
+			<Stepper step={step} />
 
-				{currentStep === 1 && <Step1Personal onNext={nextStep} />}
-				{currentStep === 2 && (
-					<Step2Address onNext={nextStep} onBack={prevStep} />
+			<form onSubmit={handleSubmit(step === 4 ? finish : next)}>
+				{step === 1 && <Step1Personal onNext={handleSubmit(next)} />}
+
+				{step === 2 && (
+					<Step2Address onBack={back} onNext={handleSubmit(next)} />
 				)}
-				{currentStep === 3 && (
-					<Step3Additional onNext={nextStep} onBack={prevStep} />
+
+				{step === 3 && <Step3Additional onBack={back} />}
+
+				{step === 4 && (
+					<Step4Review onBack={back} goToStep={goToStep} />
 				)}
-				{currentStep === 4 && <Step4Review goToStep={setCurrentStep} />}
 			</form>
 		</FormProvider>
 	);
-};
-
-export default RegistrationForm;
+}

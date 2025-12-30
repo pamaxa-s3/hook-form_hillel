@@ -1,37 +1,40 @@
 import * as yup from 'yup';
-import {nameRegex, passwordRegex} from '@utils/constants'
 
 export const step1Schema = yup.object({
   personal: yup.object({
     firstName: yup
       .string()
-      .required("Ім'я обов'язкове")
-      .min(2, 'Мінімум 2 символи')
-      .matches(nameRegex, 'Тільки літери'),
+      .min(2, "Мінімум 2 символи")
+      .matches(/^[A-Za-zА-Яа-яІіЇїЄє\s]+$/, "Тільки літери та пробіли")
+      .required("Імʼя обовʼязкове"),
 
     lastName: yup
       .string()
-      .required("Прізвище обов'язкове")
-      .min(2, 'Мінімум 2 символи')
-      .matches(nameRegex, 'Тільки літери'),
+      .min(2, "Мінімум 2 символи")
+      .matches(/^[A-Za-zА-Яа-яІіЇїЄє\s]+$/, "Тільки літери та пробіли")
+      .required("Прізвище обовʼязкове"),
 
     email: yup
       .string()
-      .required("Email обов'язкове")
-      .email('Невірний формат email')
-      .test('email-unique', 'Email вже зареєстрований', async value => {
-        if (!value) return true;
-        return !['test@example.com', 'admin@example.com'].includes(value);
-      }),
+      .email("Невалідний email")
+      .required("Email обовʼязковий")
+      .test(
+        'unique',
+        'Email вже зайнятий',
+        async value => {
+          await new Promise(r => setTimeout(r, 500));
+          return !['test@example.com', 'admin@example.com'].includes(value);
+        }
+      ),
 
     password: yup
       .string()
-      .required("Пароль обов'язковий")
-      .matches(passwordRegex, 'Слабкий пароль'),
+      .min(8, "Пароль має містити мінімум 8 символів")
+      .required("Пароль обовʼязковий"),
 
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref('password')], 'Паролі не співпадають')
-      .required("Підтвердження обовʼязкове"),
-  }),
+      .oneOf([yup.ref('password')], "Паролі не співпадають")
+      .required("Підтвердіть пароль")
+  })
 });

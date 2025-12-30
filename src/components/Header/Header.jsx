@@ -1,5 +1,5 @@
 import {NavLink} from 'react-router-dom'
-import Navigation from '@comp/Navigation';
+import Navigation from '@components/Navigation';
 import cls from './Header.module.css';
 
 const Header = () => {

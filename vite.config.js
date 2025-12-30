@@ -10,13 +10,13 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			'@comp': path.resolve(__dirname, 'src/components'),
+			'@components': path.resolve(__dirname, 'src/components'),
 			'@hooks': path.resolve(__dirname, 'src/hooks'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@pages': path.resolve(__dirname, 'src/pages'),
-			'@lay': path.resolve(__dirname, 'src/layouts'),
+			'@layouts': path.resolve(__dirname, 'src/layouts'),
 			'@validation': path.resolve(__dirname, 'src/validation'),
-			'@help': path.resolve(__dirname, 'src/helpers')
+			'@helpers': path.resolve(__dirname, 'src/helpers')
 		}
 	}
 });

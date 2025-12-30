@@ -1,88 +1,120 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import {
-	FormInput,
-	FormRadio,
-	FormTextarea,
-	FormFileUpload
-} from '@comp/form';
+import { useFormContext, Controller } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
-import cls from './steps.module.css';
+export default function Step3Additional({ onBack }) {
+  const {
+    register,
+    control,
+    formState: { errors },
+    watch,
+  } = useFormContext();
 
-const Step3Additional = ({ onNext, onBack }) => {
-	const {
-		register,
-		control,
-		formState: { errors }
-	} = useFormContext();
+  const bio = watch('additional.bio') || '';
+  const avatar = watch('additional.avatar');
 
-	return (
-		<>
-			<h2>Додаткова інформація</h2>
+  const [preview, setPreview] = useState(null);
 
-			<FormInput
-				label="Телефон"
-				name="additional.phone"
-				register={register}
-				error={errors?.additional?.phone}
-				placeholder="+380XXXXXXXXX"
-			/>
+  useEffect(() => {
+    if (!avatar) {
+      setPreview(null);
+      return;
+    }
 
-			<FormInput
-				label="Дата народження"
-				name="additional.birthDate"
-				type="date"
-				register={register}
-				error={errors?.additional?.birthDate}
-			/>
+    const objectUrl = URL.createObjectURL(avatar);
+    setPreview(objectUrl);
 
-			<Controller
-				name="additional.gender"
-				control={control}
-				render={({ field }) => (
-					<FormRadio
-						label="Стать"
-						options={[
-							{ value: 'male', label: 'Чоловіча' },
-							{ value: 'female', label: 'Жіноча' },
-							{ value: 'other', label: 'Інше' }
-						]}
-						error={errors?.additional?.gender}
-						{...field}
-					/>
-				)}
-			/>
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [avatar]);
 
-			<FormFileUpload
-				label="Аватар"
-				name="additional.avatar"
-				control={control}
-				error={errors?.additional?.avatar}
-			/>
+  return (
+    <>
+      <h2>Додаткова інформація</h2>
 
-			<Controller
-				name="additional.bio"
-				control={control}
-				render={({ field }) => (
-					<FormTextarea
-						label="Про себе"
-						maxLength={500}
-						error={errors?.additional?.bio}
-						{...field}
-					/>
-				)}
-			/>
+      <div>
+        <input
+          {...register('additional.phone')}
+          placeholder="+380XXXXXXXXX"
+        />
+        <p>{errors?.additional?.phone?.message}</p>
+      </div>
 
-			<div className={cls.formButtons}>
-				<button type="button" onClick={onBack}>
-					← Назад
-				</button>
+      <div>
+        <input
+          type="date"
+          {...register('additional.birthDate')}
+        />
+        <p>{errors?.additional?.birthDate?.message}</p>
+      </div>
 
-				<button type="button" onClick={onNext}>
-					Далі →
-				</button>
-			</div>
-		</>
-	);
-};
+      <div>
+        <label>
+          <input
+            type="radio"
+            value="male"
+            {...register('additional.gender')}
+          />
+          Чоловіча
+        </label>
 
-export default Step3Additional;
+        <label>
+          <input
+            type="radio"
+            value="female"
+            {...register('additional.gender')}
+          />
+          Жіноча
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="other"
+            {...register('additional.gender')}
+          />
+          Інше
+        </label>
+
+        <p>{errors?.additional?.gender?.message}</p>
+      </div>
+
+      <Controller
+        name="additional.avatar"
+        control={control}
+        render={({ field }) => (
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) => field.onChange(e.target.files[0] || null)}
+          />
+        )}
+      />
+      <p>{errors?.additional?.avatar?.message}</p>
+
+      {preview && (
+        <img
+          src={preview}
+          alt="avatar preview"
+          width={100}
+        />
+      )}
+
+      <div>
+        <textarea
+          {...register('additional.bio')}
+          maxLength={500}
+        />
+        <div>{bio.length} / 500</div>
+        <p>{errors?.additional?.bio?.message}</p>
+      </div>
+
+      <div style={{ display: 'flex', gap: 12 }}>
+        <button type="button" onClick={onBack}>
+          ← Назад
+        </button>
+        <button type="submit">
+          Далі →
+        </button>
+      </div>
+    </>
+  );
+}

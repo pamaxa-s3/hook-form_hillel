@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import FormCheckbox from '@comp/form';
+import FormCheckbox from '@components/form';
 
 const AgreementsBlock = () => {
   const {

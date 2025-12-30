@@ -1,11 +1,24 @@
 import { useFormContext } from 'react-hook-form';
-import { FormInput } from '@comp/form';
+import { FormInput } from '@components/form';
 
-const Step1Personal = ({ onNext }) => {
+const isWeakPassword = password => {
+  if (!password) return false;
+  return !(
+    /[A-Z]/.test(password) &&
+    /\d/.test(password) &&
+    /[!@#$%^&*]/.test(password)
+  );
+};
+
+const Step1Personal = () => {
   const {
     register,
+    watch,
     formState: { errors, isValidating }
   } = useFormContext();
+
+  const password = watch('personal.password');
+  const weakPassword = isWeakPassword(password);
 
   return (
     <>
@@ -42,6 +55,12 @@ const Step1Personal = ({ onNext }) => {
         error={errors?.personal?.password}
       />
 
+      {weakPassword && !errors?.personal?.password && (
+        <p style={{ color: 'orange', fontSize: 14 }}>
+          Пароль слабкий. Рекомендуємо додати велику літеру, цифру та спецсимвол
+        </p>
+      )}
+
       <FormInput
         label="Підтвердження пароля"
         name="personal.confirmPassword"
@@ -50,9 +69,7 @@ const Step1Personal = ({ onNext }) => {
         error={errors?.personal?.confirmPassword}
       />
 
-      <button type="button" onClick={onNext}>
-        Далі →
-      </button>
+      <button type="submit">Далі →</button>
     </>
   );
 };

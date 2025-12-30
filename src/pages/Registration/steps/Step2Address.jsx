@@ -1,83 +1,87 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormInput, FormSelect } from '@comp/form';
+import { FormInput, FormSelect } from '@components/form';
 import { countries } from '@utils/countries';
 import cls from './steps.module.css';
 
 const Step2Address = ({ onNext, onBack }) => {
-	const {
-		register,
-		watch,
-		setValue,
-		formState: { errors }
-	} = useFormContext();
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors }
+  } = useFormContext();
 
-	const country = watch('address.country');
+  const country = watch('address.country');
 
-	useEffect(() => {
-		setValue('address.postalCode', '');
-	}, [country, setValue]);
+  useEffect(() => {
+    setValue('address.postalCode', '');
+  }, [country, setValue]);
 
-	return (
-		<>
-			<h2>Адреса</h2>
+  return (
+    <>
+      <h2>Адреса</h2>
 
-			<FormSelect
-				label="Країна"
-				name="address.country"
-				options={countries}
-				register={register}
-				error={errors?.address?.country}
-			/>
+      <FormSelect
+        label="Країна"
+        name="address.country"
+        options={countries}
+        register={register}
+        error={errors?.address?.country}
+      />
 
-			<FormInput
-				label="Місто"
-				name="address.city"
-				register={register}
-				error={errors?.address?.city}
-			/>
+      <FormInput
+        label="Місто"
+        name="address.city"
+        register={register}
+        error={errors?.address?.city}
+      />
 
-			<FormInput
-				label="Вулиця"
-				name="address.street"
-				register={register}
-				error={errors?.address?.street}
-			/>
+      <FormInput
+        label="Вулиця"
+        name="address.street"
+        register={register}
+        error={errors?.address?.street}
+      />
 
-			<FormInput
-				label="Номер будинку"
-				name="address.building"
-				register={register}
-				error={errors?.address?.building}
-			/>
+      <FormInput
+        label="Номер будинку"
+        name="address.building"
+        register={register}
+        error={errors?.address?.building}
+      />
 
-			<FormInput
-				label="Квартира"
-				name="address.apartment"
-				type="number"
-				register={register}
-				error={errors?.address?.apartment}
-			/>
+      <FormInput
+        label="Квартира"
+        name="address.apartment"
+        register={register}
+        error={errors?.address?.apartment}
+      />
 
-			<FormInput
-				label="Поштовий індекс"
-				name="address.postalCode"
-				register={register}
-				error={errors?.address?.postalCode}
-				placeholder={
-					country === 'UA' ? '12345' : '12345 або 12345-6789'
-				}
-			/>
-			<div className={cls.formButtons}>
-				<button type="button" onClick={onBack}>
-					← Назад
-				</button>
-				<button type="button" onClick={onNext}>
-					Далі →
-				</button>
-			</div>
-		</>
-	);
+      <FormInput
+        label="Поштовий індекс"
+        name="address.postalCode"
+        register={register}
+        error={errors?.address?.postalCode}
+        placeholder={
+          country === 'UA'
+            ? '12345'
+            : country === 'US'
+            ? '12345 або 12345-6789'
+            : ''
+        }
+      />
+
+      <div className={cls.formButtons}>
+        <button type="button" onClick={onBack}>
+          ← Назад
+        </button>
+        <button type="submit">
+          Далі →
+        </button>
+      </div>
+    </>
+  );
 };
 
 export default Step2Address;
