@@ -6,8 +6,15 @@
 .layout {
 	height: 100vh;
 	display: flex;
+	width: 100%;
+	max-width: 1240px;
 	flex-direction: column;
 	padding: 0 10px;
+	margin: 0 auto;
+
+	
+  justify-content: center;
+  padding: 3rem 1rem 0;
 }
 
 header {
@@ -22,7 +29,7 @@ header {
 .main {
 	flex: 1;
 	margin-top: var(--header-h);
-	margin-bottom: var(--footer-h);
+	padding-bottom: var(--footer-h);
 
 	overflow-y: auto;
 }

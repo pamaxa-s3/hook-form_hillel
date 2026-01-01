@@ -16,7 +16,8 @@ export default defineConfig({
 			'@pages': path.resolve(__dirname, 'src/pages'),
 			'@layouts': path.resolve(__dirname, 'src/layouts'),
 			'@validation': path.resolve(__dirname, 'src/validation'),
-			'@helpers': path.resolve(__dirname, 'src/helpers')
+			'@helpers': path.resolve(__dirname, 'src/helpers'),
+			'@styles': path.resolve(__dirname, 'src/styles'),
 		}
 	}
 });

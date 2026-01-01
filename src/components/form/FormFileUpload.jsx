@@ -1,7 +1,7 @@
 import { Controller } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css'
+import './form.css'
 
 const FormFileUpload = ({ label, name, control, error }) => {
 	const [preview, setPreview] = useState(null);

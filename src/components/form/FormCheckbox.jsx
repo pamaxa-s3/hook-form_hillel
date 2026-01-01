@@ -1,15 +1,15 @@
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css';
+import './form.css';
 
 const FormCheckbox = ({ label, name, register, error }) => {
 	return (
-		<div className={cls.formField}>
+		<div className='form-field' >
 			<label>
 				<input type="checkbox" {...register(name)} /> {label}
 			</label>
 
 			{error && <ErrorMessage message={error.message} />}
-		</div>
+		</div >
 	);
 };
 

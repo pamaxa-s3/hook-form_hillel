@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import {Step1Personal,Step2Address,Step3Additional,Step4Review} from '@pages/Registration/steps';
-
 import Stepper from '@components/Stepper';
+import { Step1Personal, Step2Address, Step3Additional, Step4Review } from '@pages/Registration/steps';
+
 import {
 	step1Schema,
 	step2Schema,
@@ -13,85 +12,70 @@ import {
 	step4Schema
 } from '@validation';
 
-const schemas = [step1Schema, step2Schema, step3Schema, step4Schema];
-const STORAGE_KEY = 'registration-form';
+import cls from './Registration.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const defaultData = {
-	personal: {},
-	address: {},
-	additional: {},
-	agreements: {}
-};
 
-export default function RegistrationForm() {
-	const navigate = useNavigate();
-
+const RegistrationForm = () => {
+	const schemas = [step1Schema, step2Schema, step3Schema, step4Schema];
 	const [step, setStep] = useState(1);
-	const [formData, setFormData] = useState(defaultData);
-
-	const goToStep = value => setStep(value);
+	const navigate = useNavigate();
 
 	const methods = useForm({
 		resolver: yupResolver(schemas[step - 1]),
-		mode: 'onBlur',
-		defaultValues: formData
+		mode: 'onTouched',
+		shouldUnregister: false,
 	});
 
-	const { handleSubmit, reset } = methods;
+	const next = async () => {
+		const fieldsByStep = {
+			1: ['personal'],
+			2: ['address'],
+			3: ['additional'],
+		};
 
-	useEffect(() => {
-		const saved = localStorage.getItem(STORAGE_KEY);
-		if (saved) {
-			const parsed = JSON.parse(saved);
-			setStep(parsed.step);
-			setFormData(parsed.data);
-			reset(parsed.data);
-		}
-	}, [reset]);
+		const valid = await methods.trigger(fieldsByStep[step]);
+		if (!valid) return;
 
-	const saveProgress = data => {
-		localStorage.setItem(
-			STORAGE_KEY,
-			JSON.stringify({
-				step,
-				data,
-				lastSaved: new Date().toISOString()
-			})
-		);
+		setStep(prev => prev + 1);
 	};
 
-	const next = data => {
-		const updated = { ...formData, ...data };
-		setFormData(updated);
-		saveProgress(updated);
-		setStep(s => s + 1);
-	};
+	const back = () => setStep(prev => prev - 1);
 
-	const back = () => setStep(s => s - 1);
-
-	const finish = data => {
-		console.log('REGISTER DATA:', data);
-		localStorage.removeItem(STORAGE_KEY);
-		navigate('/success');
+	const submit = data => {
+		console.log('FINAL DATA', data);
+		navigate('/success')
 	};
 
 	return (
 		<FormProvider {...methods}>
-			<Stepper step={step} />
+			<form
+				className={cls.form}
+				onSubmit={(e) => e.preventDefault()}
+				noValidate
+			>
 
-			<form onSubmit={handleSubmit(step === 4 ? finish : next)}>
-				{step === 1 && <Step1Personal onNext={handleSubmit(next)} />}
+				<Stepper
+					step={step}
+					onStepClick={(target) => {
+						if (target < step) setStep(target);
+					}}
+				/>
 
-				{step === 2 && (
-					<Step2Address onBack={back} onNext={handleSubmit(next)} />
-				)}
-
-				{step === 3 && <Step3Additional onBack={back} />}
-
+				{step === 1 && <Step1Personal onNext={next} />}
+				{step === 2 && <Step2Address onNext={next} onBack={back} />}
+				{step === 3 && <Step3Additional onNext={next} onBack={back} />}
 				{step === 4 && (
-					<Step4Review onBack={back} goToStep={goToStep} />
+					<Step4Review
+						onBack={back}
+						onSubmit={methods.handleSubmit(submit)}
+						goToStep={setStep}
+					/>
 				)}
+
 			</form>
 		</FormProvider>
 	);
-}
+};
+
+export default RegistrationForm;

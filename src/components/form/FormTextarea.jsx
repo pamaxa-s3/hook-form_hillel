@@ -1,5 +1,5 @@
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css'
+import './form.css';
 
 const FormTextarea = ({
 	label,
@@ -10,7 +10,7 @@ const FormTextarea = ({
 	error,
 }) => {
 	return (
-		<div className={cls.formField}>
+		<div className='form-field'>
 			<label htmlFor={name}>{label}</label>
 
 			<textarea

@@ -1,23 +1,23 @@
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css';
+import './form.css';
 
 const FormSelect = ({ label, name, options, register, error }) => {
 	return (
-		<div className={cls.formField}>
+		<div className='form-field'>
 			<label htmlFor={name}>{label}</label>
 			<select
 				id={name}
 				{...register(name)}
-				className={error ? `${cls.error}` : ''}
+				className={error ? 'error' : ''}
 			>
 				<option value="">Оберіть...</option>
 				{
-				  options.map((opt)=>(
-				    <option key={opt.value} value={opt.value}>{opt.label}</option>
-				    ))
+					options.map((opt) => (
+						<option key={opt.value} value={opt.value}>{opt.label}</option>
+					))
 				}
 			</select>
-			
+
 			{error && <ErrorMessage message={error.message} />}
 		</div>
 	);

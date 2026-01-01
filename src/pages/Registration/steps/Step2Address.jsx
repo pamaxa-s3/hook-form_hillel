@@ -9,7 +9,7 @@ const Step2Address = ({ onNext, onBack }) => {
     register,
     watch,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext();
 
   const country = watch('address.country');
@@ -30,33 +30,10 @@ const Step2Address = ({ onNext, onBack }) => {
         error={errors?.address?.country}
       />
 
-      <FormInput
-        label="Місто"
-        name="address.city"
-        register={register}
-        error={errors?.address?.city}
-      />
-
-      <FormInput
-        label="Вулиця"
-        name="address.street"
-        register={register}
-        error={errors?.address?.street}
-      />
-
-      <FormInput
-        label="Номер будинку"
-        name="address.building"
-        register={register}
-        error={errors?.address?.building}
-      />
-
-      <FormInput
-        label="Квартира"
-        name="address.apartment"
-        register={register}
-        error={errors?.address?.apartment}
-      />
+      <FormInput label="Місто" name="address.city" register={register} error={errors?.address?.city} />
+      <FormInput label="Вулиця" name="address.street" register={register} error={errors?.address?.street} />
+      <FormInput label="Номер будинку" name="address.building" register={register} error={errors?.address?.building} />
+      <FormInput label="Квартира" name="address.apartment" register={register} error={errors?.address?.apartment} />
 
       <FormInput
         label="Поштовий індекс"
@@ -67,18 +44,14 @@ const Step2Address = ({ onNext, onBack }) => {
           country === 'UA'
             ? '12345'
             : country === 'US'
-            ? '12345 або 12345-6789'
-            : ''
+              ? '12345 або 12345-6789'
+              : ''
         }
       />
 
       <div className={cls.formButtons}>
-        <button type="button" onClick={onBack}>
-          ← Назад
-        </button>
-        <button type="submit">
-          Далі →
-        </button>
+        <button type="button" onClick={onBack}>← Назад</button>
+        <button type="button" onClick={onNext}>Далі →</button>
       </div>
     </>
   );

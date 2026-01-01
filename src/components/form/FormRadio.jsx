@@ -1,9 +1,9 @@
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css'
+import './form.css'
 
 const FormRadio = ({ label, name, options, value, onChange, error }) => {
 	return (
-		<div className={cls.formField}>
+		<div className='form-field'>
 			<label>{label}</label>
 
 			{options.map((opt) => (

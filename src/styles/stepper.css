@@ -1,0 +1,41 @@
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 2px solid;
+}
+
+.step-circle.completed {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+
+.step-circle.current {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.step-circle.upcoming {
+  background-color: #fff;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}

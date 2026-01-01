@@ -10,11 +10,11 @@ const isWeakPassword = password => {
   );
 };
 
-const Step1Personal = () => {
+const Step1Personal = ({ onNext }) => {
   const {
     register,
     watch,
-    formState: { errors, isValidating }
+    formState: { errors, isValidating },
   } = useFormContext();
 
   const password = watch('personal.password');
@@ -57,7 +57,7 @@ const Step1Personal = () => {
 
       {weakPassword && !errors?.personal?.password && (
         <p style={{ color: 'orange', fontSize: 14 }}>
-          Пароль слабкий. Рекомендуємо додати велику літеру, цифру та спецсимвол
+          Пароль слабкий. Додайте велику літеру, цифру та спецсимвол
         </p>
       )}
 
@@ -69,7 +69,9 @@ const Step1Personal = () => {
         error={errors?.personal?.confirmPassword}
       />
 
-      <button type="submit">Далі →</button>
+      <button type="button" onClick={onNext}>
+        Далі →
+      </button>
     </>
   );
 };

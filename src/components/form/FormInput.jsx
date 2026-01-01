@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ErrorMessage from './ErrorMessage';
-import cls from './form.module.css';
+import './form.css';
 
 const FormInput = ({
 	label,
@@ -14,7 +14,7 @@ const FormInput = ({
 	const isPassword = type === 'password';
 
 	return (
-		<div className={cls.formField}>
+		<div className='form-field'>
 			<label htmlFor={name}>{label}</label>
 
 			<div style={{ position: 'relative' }}>
@@ -22,7 +22,7 @@ const FormInput = ({
 					id={name}
 					type={isPassword && showPassword ? 'text' : type}
 					{...register(name)}
-					className={error ? cls.error : ''}
+					className={error ? 'error' : ''}
 					{...props}
 				/>
 
@@ -30,7 +30,7 @@ const FormInput = ({
 					<button
 						type="button"
 						onClick={() => setShowPassword(v => !v)}
-						style={{ position: 'absolute', right: 8, top: 8 }}
+						style={{ position: 'absolute', right: 8, top: 3 }}
 					>
 						{showPassword ? '🙈' : '👁️'}
 					</button>
@@ -38,7 +38,7 @@ const FormInput = ({
 			</div>
 
 			{error && <ErrorMessage message={error.message} />}
-		</div>
+		</div >
 	);
 };
 

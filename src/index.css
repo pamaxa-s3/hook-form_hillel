@@ -11,4 +11,60 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
+ 
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+
+  --bg-page: #1f2933;
+  --bg-card: #111827;
+  --bg-input: #020617;
+
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-error: #fca5a5;
+
+  --border: #374151;
+  --border-focus: #6366f1;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+    circle at top,
+    #1f2937,
+    #020617
+  );
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 100px;
+  background-color: #111827;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .registration-container {
+    padding: 1rem;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
 }

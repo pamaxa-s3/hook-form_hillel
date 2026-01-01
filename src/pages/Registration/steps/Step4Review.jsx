@@ -8,7 +8,7 @@ const genderMap = {
 	other: 'Інше',
 };
 
-const Step4Review = ({ onBack, goToStep }) => {
+const Step4Review = ({ onBack, onSubmit, goToStep }) => {
 	const {
 		watch,
 		register,
@@ -106,9 +106,11 @@ const Step4Review = ({ onBack, goToStep }) => {
 				<button type="button" onClick={onBack}>
 					← Назад
 				</button>
-				<button type="submit">
+
+				<button type="button" onClick={onSubmit}>
 					Зареєструватись
 				</button>
+
 			</div>
 		</>
 	);
